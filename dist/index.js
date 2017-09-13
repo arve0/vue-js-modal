@@ -55,19 +55,22 @@
             }, list;
         };
     }, function(module, exports) {
-        module.exports = function(rawScriptExports, compiledTemplate, scopeId, cssModules) {
+        module.exports = function(rawScriptExports, compiledTemplate, injectStyles, scopeId, moduleIdentifier) {
             var esModule, scriptExports = rawScriptExports = rawScriptExports || {}, type = typeof rawScriptExports.default;
             "object" !== type && "function" !== type || (esModule = rawScriptExports, scriptExports = rawScriptExports.default);
             var options = "function" == typeof scriptExports ? scriptExports.options : scriptExports;
-            if (compiledTemplate && (options.render = compiledTemplate.render, options.staticRenderFns = compiledTemplate.staticRenderFns), 
-            scopeId && (options._scopeId = scopeId), cssModules) {
-                var computed = options.computed || (options.computed = {});
-                Object.keys(cssModules).forEach(function(key) {
-                    var module = cssModules[key];
-                    computed[key] = function() {
-                        return module;
-                    };
-                });
+            compiledTemplate && (options.render = compiledTemplate.render, options.staticRenderFns = compiledTemplate.staticRenderFns), 
+            scopeId && (options._scopeId = scopeId);
+            var hook;
+            if (moduleIdentifier ? (hook = function(context) {
+                context = context || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext, 
+                context || "undefined" == typeof __VUE_SSR_CONTEXT__ || (context = __VUE_SSR_CONTEXT__), 
+                injectStyles && injectStyles.call(this, context), context && context._registeredComponents && context._registeredComponents.add(moduleIdentifier);
+            }, options._ssrRegister = hook) : injectStyles && (hook = injectStyles), hook) {
+                var functional = options.functional, existing = functional ? options.render : options.beforeCreate;
+                functional ? options.render = function(h, context) {
+                    return hook.call(context), existing(h, context);
+                } : options.beforeCreate = existing ? [].concat(existing, hook) : [ hook ];
             }
             return {
                 esModule: esModule,
@@ -204,22 +207,32 @@
         exports.default = {
             inRange: inRange
         };
-    }, function(module, exports, __webpack_require__) {
-        __webpack_require__(18);
-        var Component = __webpack_require__(1)(__webpack_require__(7), __webpack_require__(15), null, null);
-        Component.options.__file = "/Users/yev/Projects/vue/vue-js-modal/src/Dialog.vue", 
-        Component.esModule && Object.keys(Component.esModule).some(function(key) {
-            return "default" !== key && "__esModule" !== key;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function injectStyle(ssrContext) {
+            disposed || __webpack_require__(18);
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Dialog_vue__ = __webpack_require__(7), __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Dialog_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Dialog_vue__), __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_18cd6db4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Dialog_vue__ = __webpack_require__(15), disposed = !1, normalizeComponent = __webpack_require__(1), __vue_styles__ = injectStyle, Component = normalizeComponent(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Dialog_vue___default.a, __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_18cd6db4_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Dialog_vue__.a, __vue_styles__, null, null);
+        Component.options.__file = "src/Dialog.vue", Component.esModule && Object.keys(Component.esModule).some(function(key) {
+            return "default" !== key && "__" !== key.substr(0, 2);
         }) && console.error("named exports are not supported in *.vue files."), Component.options.functional && console.error("[vue-loader] Dialog.vue: functional components are not supported with templates, they should use render functions."), 
-        module.exports = Component.exports;
-    }, function(module, exports, __webpack_require__) {
-        __webpack_require__(19);
-        var Component = __webpack_require__(1)(__webpack_require__(8), __webpack_require__(16), null, null);
-        Component.options.__file = "/Users/yev/Projects/vue/vue-js-modal/src/Modal.vue", 
-        Component.esModule && Object.keys(Component.esModule).some(function(key) {
-            return "default" !== key && "__esModule" !== key;
+        __webpack_exports__.default = Component.exports;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function injectStyle(ssrContext) {
+            disposed || __webpack_require__(19);
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Modal_vue__ = __webpack_require__(8), __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Modal_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Modal_vue__), __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_40dd3b1e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Modal_vue__ = __webpack_require__(16), disposed = !1, normalizeComponent = __webpack_require__(1), __vue_styles__ = injectStyle, Component = normalizeComponent(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Modal_vue___default.a, __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_40dd3b1e_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Modal_vue__.a, __vue_styles__, null, null);
+        Component.options.__file = "src/Modal.vue", Component.esModule && Object.keys(Component.esModule).some(function(key) {
+            return "default" !== key && "__" !== key.substr(0, 2);
         }) && console.error("named exports are not supported in *.vue files."), Component.options.functional && console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions."), 
-        module.exports = Component.exports;
+        __webpack_exports__.default = Component.exports;
     }, function(module, exports, __webpack_require__) {
         "use strict";
         Object.defineProperty(exports, "__esModule", {
@@ -475,7 +488,7 @@
                     modal.heightType = height.type;
                 },
                 onWindowResize: function() {
-                    this.window.width = document.body.clientWidth, this.window.height = window.innerHeight;
+                    this.window.width = window.innerWidth, this.window.height = window.innerHeight;
                 },
                 genEventObject: function(params) {
                     var data = {
@@ -675,7 +688,7 @@
     }, function(module, exports, __webpack_require__) {
         exports = module.exports = __webpack_require__(0)(), exports.push([ module.i, "\n.vue-dialog {\n  font-size: 14px;\n}\n.vue-dialog div {\n  box-sizing: border-box;\n}\n.vue-dialog .dialog-flex {\n  width: 100%;\n  height: 100%;\n}\n.vue-dialog .dialog-content {\n  flex: 1 0 auto;\n  width: 100%;\n  padding: 15px;\n}\n.vue-dialog .dialog-c-title {\n  font-weight: 600;\n  padding-bottom: 15px;\n}\n.vue-dialog .dialog-c-text {\n}\n.vue-dialog .dialog-buttons {\n  display: flex;\n  flex: 0 1 auto;\n  width: 100%;\n  border-top: 1px solid #eee;\n  font-size: 12px;\n}\n.vue-dialog .dialog-buttons-none {\n  width: 100%;\n  padding-bottom: 15px;\n}\n.vue-dialog button {\n  background: transparent;\n  padding: 0;\n  margin: 0;\n  border: 0;\n  cursor: pointer;\n  box-sizing: border-box;\n  line-height: 44px;\n  height: 44px;\n\n/*  text-transform: uppercase; */\n/*  letter-spacing: 1px; */\n\n  color:inherit;\n  font:inherit;\n}\n.vue-dialog button:hover {\n  background: rgba(0, 0, 0, 0.01);\n}\n.vue-dialog button:active {\n  background: rgba(0, 0, 0, 0.025);\n}\n.vue-dialog button:not(:first-of-type) {\n  border-left: 1px solid #eee;\n}\n", "", {
             version: 3,
-            sources: [ "/./src/Dialog.vue?64613640" ],
+            sources: [ "/./src/src/Dialog.vue?4a64e76b" ],
             names: [],
             mappings: ";AAuFA;EACA,gBAAA;CACA;AAEA;EACA,uBAAA;CACA;AAEA;EACA,YAAA;EACA,aAAA;CACA;AAEA;EACA,eAAA;EACA,YAAA;EACA,cAAA;CACA;AAEA;EACA,iBAAA;EACA,qBAAA;CACA;AAEA;CACA;AAEA;EACA,cAAA;EACA,eAAA;EACA,YAAA;EACA,2BAAA;EACA,gBAAA;CACA;AAEA;EACA,YAAA;EACA,qBAAA;CACA;AAEA;EACA,wBAAA;EACA,WAAA;EACA,UAAA;EACA,UAAA;EACA,gBAAA;EACA,uBAAA;EACA,kBAAA;EACA,aAAA;;AAEA,iCAAA;AACA,2BAAA;;EAEA,cAAA;EACA,aAAA;CACA;AAEA;EACA,gCAAA;CACA;AAEA;EACA,iCAAA;CACA;AAEA;EACA,4BAAA;CACA",
             file: "Dialog.vue",
@@ -685,158 +698,175 @@
     }, function(module, exports, __webpack_require__) {
         exports = module.exports = __webpack_require__(0)(), exports.push([ module.i, "\n.v--modal-block-scroll {\n  overflow: hidden;\n}\n.v--modal-overlay {\n  position: fixed;\n  box-sizing: border-box;\n  left: 0;\n  top: 0;\n  width: 100vw;\n  height: 100vh;\n  background: rgba(0, 0, 0, 0.2);\n  z-index: 999;\n  opacity: 1;\n}\n.v--modal-overlay.scrollable {\n  height: 100%;\n  min-height: 100vh;\n  overflow-y: auto;\n  padding-bottom: 10px;\n}\n.v--modal-overlay .v--modal-box {\n  position: relative;\n  overflow: hidden;\n  box-sizing: border-box;\n}\n.v--modal-overlay.scrollable .v--modal-box {\n  margin-bottom: 10px;\n}\n.v--modal {\n  background-color: white;\n  text-align: left;\n  border-radius: 3px;\n  box-shadow: 0 20px 60px -2px rgba(27, 33, 58, .4);\n  padding: 0;\n}\n.v--modal.v--modal-fullscreen {\n  width: 100vw;\n  height: 100vh;\n  margin: 0;\n  left: 0;\n  top: 0;\n}\n.v--modal-top-right {\n  display: block;\n  position: absolute;\n  right: 0;\n  top: 0;\n}\n.overlay-fade-enter-active, .overlay-fade-leave-active {\n  transition: all 0.2s;\n}\n.overlay-fade-enter, .overlay-fade-leave-active {\n  opacity: 0;\n}\n.nice-modal-fade-enter-active, .nice-modal-fade-leave-active {\n  transition: all 0.4s;\n}\n.nice-modal-fade-enter, .nice-modal-fade-leave-active {\n  opacity: 0;\n  transform: translateY(-20px);\n}\n", "", {
             version: 3,
-            sources: [ "/./src/Modal.vue?2c0ce702" ],
+            sources: [ "/./src/src/Modal.vue?4c74cf36" ],
             names: [],
             mappings: ";AAufA;EACA,iBAAA;CACA;AAEA;EACA,gBAAA;EACA,uBAAA;EACA,QAAA;EACA,OAAA;EACA,aAAA;EACA,cAAA;EACA,+BAAA;EACA,aAAA;EACA,WAAA;CACA;AAEA;EACA,aAAA;EACA,kBAAA;EACA,iBAAA;EACA,qBAAA;CACA;AAEA;EACA,mBAAA;EACA,iBAAA;EACA,uBAAA;CACA;AAEA;EACA,oBAAA;CACA;AAEA;EACA,wBAAA;EACA,iBAAA;EACA,mBAAA;EACA,kDAAA;EACA,WAAA;CACA;AAEA;EACA,aAAA;EACA,cAAA;EACA,UAAA;EACA,QAAA;EACA,OAAA;CACA;AAEA;EACA,eAAA;EACA,mBAAA;EACA,SAAA;EACA,OAAA;CACA;AAEA;EACA,qBAAA;CACA;AAEA;EACA,WAAA;CACA;AAEA;EACA,qBAAA;CACA;AAEA;EACA,WAAA;EACA,6BAAA;CACA",
             file: "Modal.vue",
-            sourcesContent: [ "<template>\n  <transition name=\"overlay-fade\">\n    <div v-if=\"visibility.overlay\"\n         ref=\"overlay\"\n         :class=\"overlayClass\"\n         :aria-expanded=\"visible.toString()\"\n         :data-modal=\"name\"\n         @mousedown.stop=\"onBackgroundClick\"\n         @touchstart.stop=\"onBackgroundClick\">\n      <div class=\"v--modal-top-right\">\n        <slot name=\"top-right\"/>\n      </div>\n      <transition :name=\"transition\">\n        <div v-if=\"visibility.modal\"\n             ref=\"modal\"\n             :class=\"modalClass\"\n             :style=\"modalStyle\"\n             @mousedown.stop\n             @touchstart.stop>\n          <slot/>\n          <resizer v-if=\"resizable && !isAutoHeight\"\n                   :min-width=\"minWidth\"\n                   :min-height=\"minHeight\"\n                   @resize=\"onModalResize\"/>\n        </div>\n      </transition>\n    </div>\n  </transition>\n</template>\n<script>\n  import Vue         from 'vue'\n  import Modal       from './index'\n  import Resizer     from './Resizer.vue'\n  import { inRange } from './util'\n  import parseNumber from './parser'\n\n  export default {\n    name: 'VueJsModal',\n    props: {\n      name: {\n        required: true,\n        type: String\n      },\n      delay: {\n        type: Number,\n        default: 0\n      },\n      resizable: {\n        type: Boolean,\n        default: false\n      },\n      adaptive: {\n        type: Boolean,\n        default: false\n      },\n      draggable: {\n        type: [Boolean, String],\n        default: false\n      },\n      scrollable: {\n        type: Boolean,\n        default: false\n      },\n      reset: {\n        type: Boolean,\n        default: false\n      },\n      transition: {\n        type: String\n      },\n      clickToClose: {\n        type: Boolean,\n        default: true\n      },\n      classes: {\n        type: [String, Array],\n        default: 'v--modal'\n      },\n      minWidth: {\n        type: Number,\n        default: 0,\n        validator (value) {\n          return value >= 0\n        }\n      },\n      minHeight: {\n        type: Number,\n        default: 0,\n        validator (value) {\n          return value >= 0\n        }\n      },\n      width: {\n        type: [Number, String],\n        default: 600,\n        validator (value) {\n          if (typeof value === 'string') {\n            let width = parseNumber(value)\n            return (width.type === '%' || width.type === 'px') &&\n              width.value > 0\n          }\n\n          return value >= 0\n        }\n      },\n      height: {\n        type: [Number, String],\n        default: 300,\n        validator (value) {\n          if (typeof value === 'string') {\n            if (value === 'auto') {\n              return true\n            }\n\n            let height = parseNumber(value)\n            return (height.type === '%' || height.type === 'px') &&\n              height.value > 0\n          }\n\n          return value >= 0\n        }\n      },\n      pivotX: {\n        type: Number,\n        default: 0.5,\n        validator (value) {\n          return value >= 0 && value <= 1\n        }\n      },\n      pivotY: {\n        type: Number,\n        default: 0.5,\n        validator (value) {\n          return value >= 0 && value <= 1\n        }\n      }\n    },\n    components: {\n      Resizer\n    },\n    data () {\n      return {\n        visible: false,\n\n        visibility: {\n          modal: false,\n          overlay: false\n        },\n\n        shift: {\n          left: 0,\n          top: 0\n        },\n\n        modal: {\n          width: 0,\n          widthType: 'px',\n          height: 0,\n          heightType: 'px'\n        },\n\n        window: {\n          width: 0,\n          height: 0\n        }\n      }\n    },\n    watch: {\n      visible (value) {\n        if (value) {\n          this.visibility.overlay = true\n\n          setTimeout(() => {\n            this.visibility.modal = true\n            this.$nextTick(() => {\n              this.addDraggableListeners()\n            })\n          }, this.delay)\n        } else {\n          this.visibility.modal = false\n\n          setTimeout(() => {\n            this.visibility.overlay = false\n            this.$nextTick(() => {\n              this.removeDraggableListeners()\n            })\n          }, this.delay)\n        }\n      }\n    },\n    created () {\n      this.setInitialSize()\n    },\n    /**\n     * Sets global listeners\n     */\n    beforeMount () {\n      Modal.event.$on('toggle', (name, state, params) => {\n        if (name === this.name) {\n          if (typeof state === 'undefined') {\n            state = !this.visible\n          }\n\n          this.toggle(state, params)\n        }\n      })\n\n      window.addEventListener('resize', this.onWindowResize)\n      this.onWindowResize()\n\n      if (this.scrollable && !this.isAutoHeight) {\n        console.warn(`Modal \"${this.name}\" has scrollable flag set to true ` +\n          `but height is not \"auto\" (${this.height})`)\n      }\n    },\n    /**\n     * Removes \"resize\" window listener\n     */\n    beforeDestroy () {\n      window.removeEventListener('resize', this.onWindowResize)\n    },\n    computed: {\n      /**\n       * Returns true if height is set to \"auto\"\n       */\n      isAutoHeight () {\n        return this.modal.heightType === 'auto'\n      },\n      /**\n       * Calculates and returns modal position based on the\n       * pivots, window size and modal size\n       */\n      position () {\n        const { window, shift, pivotX, pivotY,\n          trueModalWidth, trueModalHeight } = this\n\n        const maxLeft = window.width - trueModalWidth\n        const maxTop = window.height - trueModalHeight\n\n        const minTop = this.scrollable\n          ? Number.NEGATIVE_INFINITY\n          : 0\n\n        const left = shift.left + pivotX * maxLeft\n        const top = shift.top + pivotY * maxTop\n\n        return {\n          left: inRange(0, maxLeft, left),\n          top: inRange(minTop, maxTop, top)\n        }\n      },\n      /**\n       * Returns pixel width (if set with %) and makes sure that modal size\n       * fits the window\n       */\n      trueModalWidth () {\n        const { window, modal, adaptive, minWidth } = this\n\n        const value = modal.widthType === '%'\n          ? window.width / 100 * modal.width\n          : modal.width\n\n        return adaptive\n          ? inRange(minWidth, window.width, value)\n          : value\n      },\n      /**\n       * Returns pixel height (if set with %) and makes sure that modal size\n       * fits the window.\n       *\n       * Returns 0 if height set as \"auto\"\n       */\n      trueModalHeight () {\n        const { window, modal, isAutoHeight, adaptive } = this\n\n        const value = (modal.heightType === '%')\n          ? window.height / 100 * modal.height\n          : modal.height\n\n        if (isAutoHeight) {\n          return 0\n        }\n\n        return adaptive\n          ? inRange(this.minHeight, this.window.height, value)\n          : value\n      },\n      /**\n       * Returns class list for screen overlay (modal background)\n       */\n      overlayClass () {\n        return {\n          'v--modal-overlay': true,\n          'scrollable': this.scrollable && this.isAutoHeight\n        }\n      },\n      /**\n       * Returns class list for modal itself\n       */\n      modalClass () {\n        return ['v--modal-box', this.classes]\n      },\n      /**\n       * CSS styles for position and size of the modal\n       */\n      modalStyle () {\n        return {\n          top: this.position.top + 'px',\n          left: this.position.left + 'px',\n          width: this.trueModalWidth + 'px',\n          height: this.isAutoHeight\n            ? 'auto'\n            : (this.trueModalHeight + 'px')\n        }\n      }\n    },\n    methods: {\n      /**\n       * Initializes modal's size & position,\n       * if \"reset\" flag is set to true - this function will be called\n       * every time \"beforeOpen\" is triggered\n       */\n      setInitialSize () {\n        let { modal } = this\n        let width = parseNumber(this.width)\n        let height = parseNumber(this.height)\n\n        modal.width = width.value\n        modal.widthType = width.type\n        modal.height = height.value\n        modal.heightType = height.type\n      },\n\n      onWindowResize () {\n        this.window.width = document.body.clientWidth\n        this.window.height = window.innerHeight\n      },\n\n      /**\n       * Generates event object\n       */\n      genEventObject (params) {\n        // @todo: clean this up (change to ...)\n        var data = {\n          name: this.name,\n          timestamp: Date.now(),\n          canceled: false,\n          ref: this.$refs.modal\n        }\n\n        return Vue.util.extend(data, params || {})\n      },\n      /**\n       * Event handler which is triggered on modal resize\n       */\n      onModalResize (event) {\n        this.modal.widthType = 'px'\n        this.modal.width = event.size.width\n\n        this.modal.heightType = 'px'\n        this.modal.height = event.size.height\n\n        const { size } = this.modal\n        const resizeEvent = this.genEventObject({ size })\n\n        this.$emit('resize', resizeEvent)\n      },\n      /**\n       * Event handler which is triggered on $modal.show and $modal.hight\n       */\n      toggle (state, params) {\n        const { reset, scrollable, visible } = this\n\n        const beforeEventName = visible\n          ? 'before-close'\n          : 'before-open'\n\n        const afterEventName = visible\n          ? 'closed'\n          : 'opened'\n\n        if (beforeEventName === 'before-open') {\n          if (reset) {\n            this.setInitialSize()\n            this.shift.left = 0\n            this.shift.top = 0\n          }\n\n          if (scrollable) {\n            document.body.classList.add('v--modal-block-scroll')\n          }\n        }\n\n        if (beforeEventName === 'before-close') {\n          if (scrollable) {\n            document.body.classList.remove('v--modal-block-scroll')\n          }\n        }\n\n        let stopEventExecution = false\n\n        const stop = () => {\n          stopEventExecution = true\n        }\n        const beforeEvent = this.genEventObject({ stop, state, params })\n\n        this.$emit(beforeEventName, beforeEvent)\n\n        if (!stopEventExecution) {\n          const afterEvent = this.genEventObject({ state, params })\n\n          this.visible = state\n          this.$emit(afterEventName, afterEvent)\n        }\n      },\n\n      getDraggableElement () {\n        var selector = typeof this.draggable !== 'string'\n          ? '.v--modal-box'\n          : this.draggable\n\n        if (selector) {\n          var handler = this.$refs.overlay.querySelector(selector)\n          if (handler) {\n            return handler\n          }\n        }\n      },\n      /**\n       * Event handler that is triggered when background overlay is clicked\n       */\n      onBackgroundClick () {\n        if (this.clickToClose) {\n          this.toggle(false)\n        }\n      },\n\n      addDraggableListeners () {\n        if (!this.draggable) {\n          return\n        }\n\n        let dragger = this.getDraggableElement()\n\n        if (dragger) {\n          let startX = 0\n          let startY = 0\n          let cachedShiftX = 0\n          let cachedShiftY = 0\n\n          let getPosition = (event) => {\n            return event.touches && event.touches.length > 0\n              ? event.touches[0]\n              : event\n          }\n\n          let mousedown = (event) => {\n            let { clientX, clientY } = getPosition(event)\n\n            document.addEventListener('mousemove', mousemove)\n            document.addEventListener('mouseup', mouseup)\n\n            document.addEventListener('touchmove', mousemove)\n            document.addEventListener('touchend', mouseup)\n\n            startX = clientX\n            startY = clientY\n            cachedShiftX = this.shift.left\n            cachedShiftY = this.shift.top\n\n            event.preventDefault()\n          }\n\n          let mousemove = (event) => {\n            let { clientX, clientY } = getPosition(event)\n\n            this.shift.left = cachedShiftX + clientX - startX\n            this.shift.top = cachedShiftY + clientY - startY\n            event.preventDefault()\n          }\n\n          let mouseup = (event) => {\n            document.removeEventListener('mousemove', mousemove)\n            document.removeEventListener('mouseup', mouseup)\n\n            document.removeEventListener('touchmove', mousemove)\n            document.removeEventListener('touchend', mouseup)\n\n            event.preventDefault()\n          }\n\n          dragger.addEventListener('mousedown', mousedown)\n          dragger.addEventListener('touchstart', mousedown)\n        }\n      },\n\n      removeDraggableListeners () {\n      //  console.log('removing draggable handlers')\n      }\n    }\n  }\n<\/script>\n<style>\n  .v--modal-block-scroll {\n    overflow: hidden;\n  }\n\n  .v--modal-overlay {\n    position: fixed;\n    box-sizing: border-box;\n    left: 0;\n    top: 0;\n    width: 100vw;\n    height: 100vh;\n    background: rgba(0, 0, 0, 0.2);\n    z-index: 999;\n    opacity: 1;\n  }\n\n  .v--modal-overlay.scrollable {\n    height: 100%;\n    min-height: 100vh;\n    overflow-y: auto;\n    padding-bottom: 10px;\n  }\n\n  .v--modal-overlay .v--modal-box {\n    position: relative;\n    overflow: hidden;\n    box-sizing: border-box;\n  }\n\n  .v--modal-overlay.scrollable .v--modal-box {\n    margin-bottom: 10px;\n  }\n\n  .v--modal {\n    background-color: white;\n    text-align: left;\n    border-radius: 3px;\n    box-shadow: 0 20px 60px -2px rgba(27, 33, 58, .4);\n    padding: 0;\n  }\n\n  .v--modal.v--modal-fullscreen {\n    width: 100vw;\n    height: 100vh;\n    margin: 0;\n    left: 0;\n    top: 0;\n  }\n\n  .v--modal-top-right {\n    display: block;\n    position: absolute;\n    right: 0;\n    top: 0;\n  }\n\n  .overlay-fade-enter-active, .overlay-fade-leave-active {\n    transition: all 0.2s;\n  }\n\n  .overlay-fade-enter, .overlay-fade-leave-active {\n    opacity: 0;\n  }\n\n  .nice-modal-fade-enter-active, .nice-modal-fade-leave-active {\n    transition: all 0.4s;\n  }\n\n  .nice-modal-fade-enter, .nice-modal-fade-leave-active {\n    opacity: 0;\n    transform: translateY(-20px);\n  }\n</style>\n" ],
+            sourcesContent: [ "<template>\n  <transition name=\"overlay-fade\">\n    <div v-if=\"visibility.overlay\"\n         ref=\"overlay\"\n         :class=\"overlayClass\"\n         :aria-expanded=\"visible.toString()\"\n         :data-modal=\"name\"\n         @mousedown.stop=\"onBackgroundClick\"\n         @touchstart.stop=\"onBackgroundClick\">\n      <div class=\"v--modal-top-right\">\n        <slot name=\"top-right\"/>\n      </div>\n      <transition :name=\"transition\">\n        <div v-if=\"visibility.modal\"\n             ref=\"modal\"\n             :class=\"modalClass\"\n             :style=\"modalStyle\"\n             @mousedown.stop\n             @touchstart.stop>\n          <slot/>\n          <resizer v-if=\"resizable && !isAutoHeight\"\n                   :min-width=\"minWidth\"\n                   :min-height=\"minHeight\"\n                   @resize=\"onModalResize\"/>\n        </div>\n      </transition>\n    </div>\n  </transition>\n</template>\n<script>\n  import Vue         from 'vue'\n  import Modal       from './index'\n  import Resizer     from './Resizer.vue'\n  import { inRange } from './util'\n  import parseNumber from './parser'\n\n  export default {\n    name: 'VueJsModal',\n    props: {\n      name: {\n        required: true,\n        type: String\n      },\n      delay: {\n        type: Number,\n        default: 0\n      },\n      resizable: {\n        type: Boolean,\n        default: false\n      },\n      adaptive: {\n        type: Boolean,\n        default: false\n      },\n      draggable: {\n        type: [Boolean, String],\n        default: false\n      },\n      scrollable: {\n        type: Boolean,\n        default: false\n      },\n      reset: {\n        type: Boolean,\n        default: false\n      },\n      transition: {\n        type: String\n      },\n      clickToClose: {\n        type: Boolean,\n        default: true\n      },\n      classes: {\n        type: [String, Array],\n        default: 'v--modal'\n      },\n      minWidth: {\n        type: Number,\n        default: 0,\n        validator (value) {\n          return value >= 0\n        }\n      },\n      minHeight: {\n        type: Number,\n        default: 0,\n        validator (value) {\n          return value >= 0\n        }\n      },\n      width: {\n        type: [Number, String],\n        default: 600,\n        validator (value) {\n          if (typeof value === 'string') {\n            let width = parseNumber(value)\n            return (width.type === '%' || width.type === 'px') &&\n              width.value > 0\n          }\n\n          return value >= 0\n        }\n      },\n      height: {\n        type: [Number, String],\n        default: 300,\n        validator (value) {\n          if (typeof value === 'string') {\n            if (value === 'auto') {\n              return true\n            }\n\n            let height = parseNumber(value)\n            return (height.type === '%' || height.type === 'px') &&\n              height.value > 0\n          }\n\n          return value >= 0\n        }\n      },\n      pivotX: {\n        type: Number,\n        default: 0.5,\n        validator (value) {\n          return value >= 0 && value <= 1\n        }\n      },\n      pivotY: {\n        type: Number,\n        default: 0.5,\n        validator (value) {\n          return value >= 0 && value <= 1\n        }\n      }\n    },\n    components: {\n      Resizer\n    },\n    data () {\n      return {\n        visible: false,\n\n        visibility: {\n          modal: false,\n          overlay: false\n        },\n\n        shift: {\n          left: 0,\n          top: 0\n        },\n\n        modal: {\n          width: 0,\n          widthType: 'px',\n          height: 0,\n          heightType: 'px'\n        },\n\n        window: {\n          width: 0,\n          height: 0\n        }\n      }\n    },\n    watch: {\n      visible (value) {\n        if (value) {\n          this.visibility.overlay = true\n\n          setTimeout(() => {\n            this.visibility.modal = true\n            this.$nextTick(() => {\n              this.addDraggableListeners()\n            })\n          }, this.delay)\n        } else {\n          this.visibility.modal = false\n\n          setTimeout(() => {\n            this.visibility.overlay = false\n            this.$nextTick(() => {\n              this.removeDraggableListeners()\n            })\n          }, this.delay)\n        }\n      }\n    },\n    created () {\n      this.setInitialSize()\n    },\n    /**\n     * Sets global listeners\n     */\n    beforeMount () {\n      Modal.event.$on('toggle', (name, state, params) => {\n        if (name === this.name) {\n          if (typeof state === 'undefined') {\n            state = !this.visible\n          }\n\n          this.toggle(state, params)\n        }\n      })\n\n      window.addEventListener('resize', this.onWindowResize)\n      this.onWindowResize()\n\n      if (this.scrollable && !this.isAutoHeight) {\n        console.warn(`Modal \"${this.name}\" has scrollable flag set to true ` +\n          `but height is not \"auto\" (${this.height})`)\n      }\n    },\n    /**\n     * Removes \"resize\" window listener\n     */\n    beforeDestroy () {\n      window.removeEventListener('resize', this.onWindowResize)\n    },\n    computed: {\n      /**\n       * Returns true if height is set to \"auto\"\n       */\n      isAutoHeight () {\n        return this.modal.heightType === 'auto'\n      },\n      /**\n       * Calculates and returns modal position based on the\n       * pivots, window size and modal size\n       */\n      position () {\n        const { window, shift, pivotX, pivotY,\n          trueModalWidth, trueModalHeight } = this\n\n        const maxLeft = window.width - trueModalWidth\n        const maxTop = window.height - trueModalHeight\n\n        const minTop = this.scrollable\n          ? Number.NEGATIVE_INFINITY\n          : 0\n\n        const left = shift.left + pivotX * maxLeft\n        const top = shift.top + pivotY * maxTop\n\n        return {\n          left: inRange(0, maxLeft, left),\n          top: inRange(minTop, maxTop, top)\n        }\n      },\n      /**\n       * Returns pixel width (if set with %) and makes sure that modal size\n       * fits the window\n       */\n      trueModalWidth () {\n        const { window, modal, adaptive, minWidth } = this\n\n        const value = modal.widthType === '%'\n          ? window.width / 100 * modal.width\n          : modal.width\n\n        return adaptive\n          ? inRange(minWidth, window.width, value)\n          : value\n      },\n      /**\n       * Returns pixel height (if set with %) and makes sure that modal size\n       * fits the window.\n       *\n       * Returns 0 if height set as \"auto\"\n       */\n      trueModalHeight () {\n        const { window, modal, isAutoHeight, adaptive } = this\n\n        const value = (modal.heightType === '%')\n          ? window.height / 100 * modal.height\n          : modal.height\n\n        if (isAutoHeight) {\n          return 0\n        }\n\n        return adaptive\n          ? inRange(this.minHeight, this.window.height, value)\n          : value\n      },\n      /**\n       * Returns class list for screen overlay (modal background)\n       */\n      overlayClass () {\n        return {\n          'v--modal-overlay': true,\n          'scrollable': this.scrollable && this.isAutoHeight\n        }\n      },\n      /**\n       * Returns class list for modal itself\n       */\n      modalClass () {\n        return ['v--modal-box', this.classes]\n      },\n      /**\n       * CSS styles for position and size of the modal\n       */\n      modalStyle () {\n        return {\n          top: this.position.top + 'px',\n          left: this.position.left + 'px',\n          width: this.trueModalWidth + 'px',\n          height: this.isAutoHeight\n            ? 'auto'\n            : (this.trueModalHeight + 'px')\n        }\n      }\n    },\n    methods: {\n      /**\n       * Initializes modal's size & position,\n       * if \"reset\" flag is set to true - this function will be called\n       * every time \"beforeOpen\" is triggered\n       */\n      setInitialSize () {\n        let { modal } = this\n        let width = parseNumber(this.width)\n        let height = parseNumber(this.height)\n\n        modal.width = width.value\n        modal.widthType = width.type\n        modal.height = height.value\n        modal.heightType = height.type\n      },\n\n      onWindowResize () {\n        this.window.width = window.innerWidth\n        this.window.height = window.innerHeight\n      },\n\n      /**\n       * Generates event object\n       */\n      genEventObject (params) {\n        // @todo: clean this up (change to ...)\n        var data = {\n          name: this.name,\n          timestamp: Date.now(),\n          canceled: false,\n          ref: this.$refs.modal\n        }\n\n        return Vue.util.extend(data, params || {})\n      },\n      /**\n       * Event handler which is triggered on modal resize\n       */\n      onModalResize (event) {\n        this.modal.widthType = 'px'\n        this.modal.width = event.size.width\n\n        this.modal.heightType = 'px'\n        this.modal.height = event.size.height\n\n        const { size } = this.modal\n        const resizeEvent = this.genEventObject({ size })\n\n        this.$emit('resize', resizeEvent)\n      },\n      /**\n       * Event handler which is triggered on $modal.show and $modal.hight\n       */\n      toggle (state, params) {\n        const { reset, scrollable, visible } = this\n\n        const beforeEventName = visible\n          ? 'before-close'\n          : 'before-open'\n\n        const afterEventName = visible\n          ? 'closed'\n          : 'opened'\n\n        if (beforeEventName === 'before-open') {\n          if (reset) {\n            this.setInitialSize()\n            this.shift.left = 0\n            this.shift.top = 0\n          }\n\n          if (scrollable) {\n            document.body.classList.add('v--modal-block-scroll')\n          }\n        }\n\n        if (beforeEventName === 'before-close') {\n          if (scrollable) {\n            document.body.classList.remove('v--modal-block-scroll')\n          }\n        }\n\n        let stopEventExecution = false\n\n        const stop = () => {\n          stopEventExecution = true\n        }\n        const beforeEvent = this.genEventObject({ stop, state, params })\n\n        this.$emit(beforeEventName, beforeEvent)\n\n        if (!stopEventExecution) {\n          const afterEvent = this.genEventObject({ state, params })\n\n          this.visible = state\n          this.$emit(afterEventName, afterEvent)\n        }\n      },\n\n      getDraggableElement () {\n        var selector = typeof this.draggable !== 'string'\n          ? '.v--modal-box'\n          : this.draggable\n\n        if (selector) {\n          var handler = this.$refs.overlay.querySelector(selector)\n          if (handler) {\n            return handler\n          }\n        }\n      },\n      /**\n       * Event handler that is triggered when background overlay is clicked\n       */\n      onBackgroundClick () {\n        if (this.clickToClose) {\n          this.toggle(false)\n        }\n      },\n\n      addDraggableListeners () {\n        if (!this.draggable) {\n          return\n        }\n\n        let dragger = this.getDraggableElement()\n\n        if (dragger) {\n          let startX = 0\n          let startY = 0\n          let cachedShiftX = 0\n          let cachedShiftY = 0\n\n          let getPosition = (event) => {\n            return event.touches && event.touches.length > 0\n              ? event.touches[0]\n              : event\n          }\n\n          let mousedown = (event) => {\n            let { clientX, clientY } = getPosition(event)\n\n            document.addEventListener('mousemove', mousemove)\n            document.addEventListener('mouseup', mouseup)\n\n            document.addEventListener('touchmove', mousemove)\n            document.addEventListener('touchend', mouseup)\n\n            startX = clientX\n            startY = clientY\n            cachedShiftX = this.shift.left\n            cachedShiftY = this.shift.top\n\n            event.preventDefault()\n          }\n\n          let mousemove = (event) => {\n            let { clientX, clientY } = getPosition(event)\n\n            this.shift.left = cachedShiftX + clientX - startX\n            this.shift.top = cachedShiftY + clientY - startY\n            event.preventDefault()\n          }\n\n          let mouseup = (event) => {\n            document.removeEventListener('mousemove', mousemove)\n            document.removeEventListener('mouseup', mouseup)\n\n            document.removeEventListener('touchmove', mousemove)\n            document.removeEventListener('touchend', mouseup)\n\n            event.preventDefault()\n          }\n\n          dragger.addEventListener('mousedown', mousedown)\n          dragger.addEventListener('touchstart', mousedown)\n        }\n      },\n\n      removeDraggableListeners () {\n      //  console.log('removing draggable handlers')\n      }\n    }\n  }\n<\/script>\n<style>\n  .v--modal-block-scroll {\n    overflow: hidden;\n  }\n\n  .v--modal-overlay {\n    position: fixed;\n    box-sizing: border-box;\n    left: 0;\n    top: 0;\n    width: 100vw;\n    height: 100vh;\n    background: rgba(0, 0, 0, 0.2);\n    z-index: 999;\n    opacity: 1;\n  }\n\n  .v--modal-overlay.scrollable {\n    height: 100%;\n    min-height: 100vh;\n    overflow-y: auto;\n    padding-bottom: 10px;\n  }\n\n  .v--modal-overlay .v--modal-box {\n    position: relative;\n    overflow: hidden;\n    box-sizing: border-box;\n  }\n\n  .v--modal-overlay.scrollable .v--modal-box {\n    margin-bottom: 10px;\n  }\n\n  .v--modal {\n    background-color: white;\n    text-align: left;\n    border-radius: 3px;\n    box-shadow: 0 20px 60px -2px rgba(27, 33, 58, .4);\n    padding: 0;\n  }\n\n  .v--modal.v--modal-fullscreen {\n    width: 100vw;\n    height: 100vh;\n    margin: 0;\n    left: 0;\n    top: 0;\n  }\n\n  .v--modal-top-right {\n    display: block;\n    position: absolute;\n    right: 0;\n    top: 0;\n  }\n\n  .overlay-fade-enter-active, .overlay-fade-leave-active {\n    transition: all 0.2s;\n  }\n\n  .overlay-fade-enter, .overlay-fade-leave-active {\n    opacity: 0;\n  }\n\n  .nice-modal-fade-enter-active, .nice-modal-fade-leave-active {\n    transition: all 0.4s;\n  }\n\n  .nice-modal-fade-enter, .nice-modal-fade-leave-active {\n    opacity: 0;\n    transform: translateY(-20px);\n  }\n</style>\n" ],
             sourceRoot: "webpack://"
         } ]);
     }, function(module, exports, __webpack_require__) {
         exports = module.exports = __webpack_require__(0)(), exports.push([ module.i, "\n.vue-modal-resizer {\n  display: block;\n  overflow: hidden;\n  position: absolute;\n  width: 12px;\n  height: 12px;\n  right: 0;\n  bottom: 0;\n  z-index: 9999999;\n  background: transparent;\n  cursor: se-resize;\n}\n.vue-modal-resizer::after {\n  display: block;\n  position: absolute;\n  content: '';\n  background: transparent;\n  left: 0;\n  top: 0;\n  width: 0;\n  height: 0;\n  border-bottom: 10px solid #ddd;\n  border-left: 10px solid transparent;\n}\n.vue-modal-resizer.clicked::after {\n  border-bottom: 10px solid #369BE9;\n}\n", "", {
             version: 3,
-            sources: [ "/./src/Resizer.vue?29279603" ],
+            sources: [ "/./src/src/Resizer.vue?cff0ec50" ],
             names: [],
             mappings: ";AA+EA;EACA,eAAA;EACA,iBAAA;EACA,mBAAA;EACA,YAAA;EACA,aAAA;EACA,SAAA;EACA,UAAA;EACA,iBAAA;EACA,wBAAA;EACA,kBAAA;CACA;AAEA;EACA,eAAA;EACA,mBAAA;EACA,YAAA;EACA,wBAAA;EACA,QAAA;EACA,OAAA;EACA,SAAA;EACA,UAAA;EACA,+BAAA;EACA,oCAAA;CACA;AAEA;EACA,kCAAA;CACA",
             file: "Resizer.vue",
             sourcesContent: [ "<template>\n  <div :class=\"className\"></div>\n</template>\n<script>\nimport { inRange } from './util'\n\nexport default {\n  name: 'VueJsModalResizer',\n  props: {\n    minHeight: {\n      type: Number,\n      default: 0\n    },\n    minWidth: {\n      type: Number,\n      default: 0\n    }},\n  data () {\n    return {\n      clicked: false,\n      size: {}\n    }\n  },\n  mounted () {\n    this.$el.addEventListener('mousedown', this.start, false)\n  },\n  computed: {\n    className () {\n      return {'vue-modal-resizer': true, 'clicked': this.clicked}\n    }\n  },\n  methods: {\n    start (event) {\n      this.clicked = true\n\n      window.addEventListener('mousemove', this.mousemove, false)\n      window.addEventListener('mouseup', this.stop, false)\n\n      event.stopPropagation()\n      event.preventDefault()\n    },\n    stop () {\n      this.clicked = false\n\n      window.removeEventListener('mousemove', this.mousemove, false)\n      window.removeEventListener('mouseup', this.stop, false)\n\n      this.$emit('resize-stop', {\n        element: this.$el.parentElement,\n        size: this.size\n      })\n    },\n    mousemove (event) {\n      this.resize(event)\n    },\n    resize (event) {\n      var el = this.$el.parentElement\n\n      if (el) {\n        var width = event.clientX - el.offsetLeft\n        var height = event.clientY - el.offsetTop\n\n        width = inRange(this.minWidth, window.innerWidth, width)\n        height = inRange(this.minHeight, window.innerHeight, height)\n\n        this.size = {width, height}\n        el.style.width = width + 'px'\n        el.style.height = height + 'px'\n\n        this.$emit('resize', {\n          element: el,\n          size: this.size\n        })\n      }\n    }\n  }\n}\n<\/script>\n<style>\n.vue-modal-resizer {\n  display: block;\n  overflow: hidden;\n  position: absolute;\n  width: 12px;\n  height: 12px;\n  right: 0;\n  bottom: 0;\n  z-index: 9999999;\n  background: transparent;\n  cursor: se-resize;\n}\n\n.vue-modal-resizer::after {\n  display: block;\n  position: absolute;\n  content: '';\n  background: transparent;\n  left: 0;\n  top: 0;\n  width: 0;\n  height: 0;\n  border-bottom: 10px solid #ddd;\n  border-left: 10px solid transparent;\n}\n\n.vue-modal-resizer.clicked::after {\n  border-bottom: 10px solid #369BE9;\n}\n</style>\n" ],
             sourceRoot: "webpack://"
         } ]);
-    }, function(module, exports, __webpack_require__) {
-        __webpack_require__(20);
-        var Component = __webpack_require__(1)(__webpack_require__(9), __webpack_require__(17), null, null);
-        Component.options.__file = "/Users/yev/Projects/vue/vue-js-modal/src/Resizer.vue", 
-        Component.esModule && Object.keys(Component.esModule).some(function(key) {
-            return "default" !== key && "__esModule" !== key;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        function injectStyle(ssrContext) {
+            disposed || __webpack_require__(20);
+        }
+        Object.defineProperty(__webpack_exports__, "__esModule", {
+            value: !0
+        });
+        var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Resizer_vue__ = __webpack_require__(9), __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Resizer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Resizer_vue__), __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60fe12fc_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Resizer_vue__ = __webpack_require__(17), disposed = !1, normalizeComponent = __webpack_require__(1), __vue_styles__ = injectStyle, Component = normalizeComponent(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Resizer_vue___default.a, __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60fe12fc_hasScoped_false_node_modules_vue_loader_lib_selector_type_template_index_0_Resizer_vue__.a, __vue_styles__, null, null);
+        Component.options.__file = "src/Resizer.vue", Component.esModule && Object.keys(Component.esModule).some(function(key) {
+            return "default" !== key && "__" !== key.substr(0, 2);
         }) && console.error("named exports are not supported in *.vue files."), Component.options.functional && console.error("[vue-loader] Resizer.vue: functional components are not supported with templates, they should use render functions."), 
-        module.exports = Component.exports;
-    }, function(module, exports, __webpack_require__) {
-        module.exports = {
-            render: function() {
-                var _vm = this, _h = _vm.$createElement, _c = _vm._self._c || _h;
-                return _c("modal", {
-                    attrs: {
-                        name: "dialog",
-                        height: "auto",
-                        classes: [ "v--modal", "vue-dialog", this.params.class ],
-                        width: _vm.width,
-                        "pivot-y": .3,
-                        adaptive: !0,
-                        clickToClose: _vm.clickToClose,
-                        transition: _vm.transition
-                    },
-                    on: {
-                        "before-open": _vm.beforeOpened,
-                        "before-close": _vm.beforeClosed
-                    }
-                }, [ _c("div", {
-                    staticClass: "dialog-content"
-                }, [ _vm.params.title ? _c("div", {
-                    staticClass: "dialog-c-title",
+        __webpack_exports__.default = Component.exports;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var render = function() {
+            var _vm = this, _h = _vm.$createElement, _c = _vm._self._c || _h;
+            return _c("modal", {
+                attrs: {
+                    name: "dialog",
+                    height: "auto",
+                    classes: [ "v--modal", "vue-dialog", this.params.class ],
+                    width: _vm.width,
+                    "pivot-y": .3,
+                    adaptive: !0,
+                    clickToClose: _vm.clickToClose,
+                    transition: _vm.transition
+                },
+                on: {
+                    "before-open": _vm.beforeOpened,
+                    "before-close": _vm.beforeClosed
+                }
+            }, [ _c("div", {
+                staticClass: "dialog-content"
+            }, [ _vm.params.title ? _c("div", {
+                staticClass: "dialog-c-title",
+                domProps: {
+                    innerHTML: _vm._s(_vm.params.title || "")
+                }
+            }) : _vm._e(), _vm._v(" "), _c("div", {
+                staticClass: "dialog-c-text",
+                domProps: {
+                    innerHTML: _vm._s(_vm.params.text || "")
+                }
+            }) ]), _vm._v(" "), _vm.buttons ? _c("div", {
+                staticClass: "dialog-buttons"
+            }, _vm._l(_vm.buttons, function(button, i) {
+                return _c("button", {
+                    key: i,
+                    style: _vm.buttonStyle,
                     domProps: {
-                        innerHTML: _vm._s(_vm.params.title || "")
-                    }
-                }) : _vm._e(), _vm._v(" "), _c("div", {
-                    staticClass: "dialog-c-text",
-                    domProps: {
-                        innerHTML: _vm._s(_vm.params.text || "")
-                    }
-                }) ]), _vm._v(" "), _vm.buttons ? _c("div", {
-                    staticClass: "dialog-buttons"
-                }, _vm._l(_vm.buttons, function(button, i) {
-                    return _c("button", {
-                        key: i,
-                        style: _vm.buttonStyle,
-                        domProps: {
-                            innerHTML: _vm._s(button.title)
-                        },
-                        on: {
-                            click: function($event) {
-                                $event.stopPropagation(), _vm.click(i, $event);
-                            }
-                        }
-                    }, [ _vm._v("\n        " + _vm._s(button.title) + "\n      ") ]);
-                })) : _c("div", {
-                    staticClass: "dialog-buttons-none"
-                }) ]);
-            },
-            staticRenderFns: []
-        }, module.exports.render._withStripped = !0;
-    }, function(module, exports, __webpack_require__) {
-        module.exports = {
-            render: function() {
-                var _vm = this, _h = _vm.$createElement, _c = _vm._self._c || _h;
-                return _c("transition", {
-                    attrs: {
-                        name: "overlay-fade"
-                    }
-                }, [ _vm.visibility.overlay ? _c("div", {
-                    ref: "overlay",
-                    class: _vm.overlayClass,
-                    attrs: {
-                        "aria-expanded": _vm.visible.toString(),
-                        "data-modal": _vm.name
+                        innerHTML: _vm._s(button.title)
                     },
                     on: {
-                        mousedown: function($event) {
-                            $event.stopPropagation(), _vm.onBackgroundClick($event);
-                        },
-                        touchstart: function($event) {
-                            $event.stopPropagation(), _vm.onBackgroundClick($event);
+                        click: function($event) {
+                            $event.stopPropagation(), _vm.click(i, $event);
                         }
                     }
-                }, [ _c("div", {
-                    staticClass: "v--modal-top-right"
-                }, [ _vm._t("top-right") ], 2), _vm._v(" "), _c("transition", {
-                    attrs: {
-                        name: _vm.transition
-                    }
-                }, [ _vm.visibility.modal ? _c("div", {
-                    ref: "modal",
-                    class: _vm.modalClass,
-                    style: _vm.modalStyle,
-                    on: {
-                        mousedown: function($event) {
-                            $event.stopPropagation();
-                        },
-                        touchstart: function($event) {
-                            $event.stopPropagation();
-                        }
-                    }
-                }, [ _vm._t("default"), _vm._v(" "), _vm.resizable && !_vm.isAutoHeight ? _c("resizer", {
-                    attrs: {
-                        "min-width": _vm.minWidth,
-                        "min-height": _vm.minHeight
+                }, [ _vm._v("\n        " + _vm._s(button.title) + "\n      ") ]);
+            })) : _c("div", {
+                staticClass: "dialog-buttons-none"
+            }) ]);
+        }, staticRenderFns = [];
+        render._withStripped = !0;
+        var esExports = {
+            render: render,
+            staticRenderFns: staticRenderFns
+        };
+        __webpack_exports__.a = esExports;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var render = function() {
+            var _vm = this, _h = _vm.$createElement, _c = _vm._self._c || _h;
+            return _c("transition", {
+                attrs: {
+                    name: "overlay-fade"
+                }
+            }, [ _vm.visibility.overlay ? _c("div", {
+                ref: "overlay",
+                class: _vm.overlayClass,
+                attrs: {
+                    "aria-expanded": _vm.visible.toString(),
+                    "data-modal": _vm.name
+                },
+                on: {
+                    mousedown: function($event) {
+                        $event.stopPropagation(), _vm.onBackgroundClick($event);
                     },
-                    on: {
-                        resize: _vm.onModalResize
+                    touchstart: function($event) {
+                        $event.stopPropagation(), _vm.onBackgroundClick($event);
                     }
-                }) : _vm._e() ], 2) : _vm._e() ]) ], 1) : _vm._e() ]);
-            },
-            staticRenderFns: []
-        }, module.exports.render._withStripped = !0;
-    }, function(module, exports, __webpack_require__) {
-        module.exports = {
-            render: function() {
-                var _vm = this, _h = _vm.$createElement;
-                return (_vm._self._c || _h)("div", {
-                    class: _vm.className
-                });
-            },
-            staticRenderFns: []
-        }, module.exports.render._withStripped = !0;
+                }
+            }, [ _c("div", {
+                staticClass: "v--modal-top-right"
+            }, [ _vm._t("top-right") ], 2), _vm._v(" "), _c("transition", {
+                attrs: {
+                    name: _vm.transition
+                }
+            }, [ _vm.visibility.modal ? _c("div", {
+                ref: "modal",
+                class: _vm.modalClass,
+                style: _vm.modalStyle,
+                on: {
+                    mousedown: function($event) {
+                        $event.stopPropagation();
+                    },
+                    touchstart: function($event) {
+                        $event.stopPropagation();
+                    }
+                }
+            }, [ _vm._t("default"), _vm._v(" "), _vm.resizable && !_vm.isAutoHeight ? _c("resizer", {
+                attrs: {
+                    "min-width": _vm.minWidth,
+                    "min-height": _vm.minHeight
+                },
+                on: {
+                    resize: _vm.onModalResize
+                }
+            }) : _vm._e() ], 2) : _vm._e() ]) ], 1) : _vm._e() ]);
+        }, staticRenderFns = [];
+        render._withStripped = !0;
+        var esExports = {
+            render: render,
+            staticRenderFns: staticRenderFns
+        };
+        __webpack_exports__.a = esExports;
+    }, function(module, __webpack_exports__, __webpack_require__) {
+        "use strict";
+        var render = function() {
+            var _vm = this, _h = _vm.$createElement;
+            return (_vm._self._c || _h)("div", {
+                class: _vm.className
+            });
+        }, staticRenderFns = [];
+        render._withStripped = !0;
+        var esExports = {
+            render: render,
+            staticRenderFns: staticRenderFns
+        };
+        __webpack_exports__.a = esExports;
     }, function(module, exports, __webpack_require__) {
         var content = __webpack_require__(11);
         "string" == typeof content && (content = [ [ module.i, content, "" ] ]), content.locals && (module.exports = content.locals);
-        __webpack_require__(2)("e57c1368", content, !1);
+        __webpack_require__(2)("6c6c5e98", content, !1);
     }, function(module, exports, __webpack_require__) {
         var content = __webpack_require__(12);
         "string" == typeof content && (content = [ [ module.i, content, "" ] ]), content.locals && (module.exports = content.locals);
-        __webpack_require__(2)("0ba9730a", content, !1);
+        __webpack_require__(2)("2cd3d0fe", content, !1);
     }, function(module, exports, __webpack_require__) {
         var content = __webpack_require__(13);
         "string" == typeof content && (content = [ [ module.i, content, "" ] ]), content.locals && (module.exports = content.locals);
-        __webpack_require__(2)("43d3f0d1", content, !1);
+        __webpack_require__(2)("7d702076", content, !1);
     }, function(module, exports) {
         module.exports = function(parentId, list) {
             for (var styles = [], newStyles = {}, i = 0; i < list.length; i++) {
